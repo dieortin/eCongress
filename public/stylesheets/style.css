@@ -34,6 +34,10 @@ h2 {
     font-family: 'Cantarell', serif;
 }
 
+a {
+    color: #0076BD;
+}
+
 .branding h1 {
     margin-bottom: 0;
 }
@@ -144,5 +148,6 @@ div.signup input {
 }
 
 div.signup input[type='submit'] {
+    margin-top: 10px;
     width: auto;
 }

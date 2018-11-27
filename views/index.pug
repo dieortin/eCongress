@@ -15,8 +15,8 @@ block marginless
 
 		div.signup
 			h3 Crear una cuenta
-			form
+			form(action='/signup' method='post')
 				input(required type='text' name='username' value='nombre de usuario')
 				input(required type='password' name='password' value='contraseña')
 				input(type='submit' value='Registrarme')
-			a ¡Ya tengo cuenta!
+			a(href='/login') ¡Ya tengo cuenta!
