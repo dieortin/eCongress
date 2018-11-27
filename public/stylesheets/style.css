@@ -1,8 +1,138 @@
-body {
-    padding: 50px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    font-family: 'Rubik', sans-serif;
 }
 
-a {
-    color: #00B7FF;
+html {
+    height: 100vh;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #0076BD;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-family: 'Work Sans', sans-serif;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-family: 'Cantarell', serif;
+}
+
+.branding h1 {
+    margin-bottom: 0;
+}
+
+.branding h2 {
+    margin-top: 0.1em;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #aaaaaa;
+    height: 100px;
+}
+
+header > div {
+    display: flex;
+    height: 100%;
+    text-align: center;
+    align-items: center;
+}
+
+header div.branding {
+    background-color: aqua;
+    flex-direction: column;
+    justify-content: center;
+}
+
+header div.branding > * {
+    margin: 5px 20px;
+}
+
+header div.branding h2 {
+    font-size: 1em;
+}
+
+header div.login {
+    background-color: chartreuse;
+}
+
+header div.login {
+    background-color: white;
+}
+
+header div.login > span {
+    margin: auto 20px;
+}
+
+section.main {
+    margin-top: 100px; /* Same as the header's height */
+    flex: 1;
+    min-height: calc(100vh - 100px);
+}
+
+div.index-container {
+    padding: 0 35px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    color: #fff;
+}
+
+div.index-container > div {
+    margin: 15px;
+}
+
+div.welcome-banner, div.welcome-explanation {
+    max-width: 600px;
+    text-align: center;
+}
+
+div.welcome-banner h1 {
+    font-size: 3.5em;
+}
+
+div.welcome-banner h2 {
+}
+
+div.signup {
+    color: #444;
+    padding: 7px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
+    border: 2px solid #005ba0;
+    border-radius: 15px;
+}
+
+div.signup form {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div.signup input {
+    display: block;
+    width: 300px;
+    text-align: center;
+}
+
+div.signup input[type='submit'] {
+    width: auto;
 }

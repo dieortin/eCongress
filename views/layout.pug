@@ -1,7 +1,26 @@
 doctype html
 html
-    head
-        title= title
-        link(rel='stylesheet', href='/stylesheets/style.css')
-    body
-        block content
+	head
+		title= title
+		block meta
+			meta(name='author', content='Diego Ortín Fernández')
+			meta(name='viewport', content='width=content-width')
+			meta(name='description', content='Plataforma que permite a los usuarios proponer y votar leyes')
+
+		block styles
+			link(rel='stylesheet', href='/stylesheets/style.css')
+		link(href="https://fonts.googleapis.com/css?family=Cantarell:400i|Rubik|Work+Sans", rel="stylesheet")
+	body
+		block header
+			header
+				div.branding
+					h1 eCongress
+					h2 The future of democracy
+
+				block login
+					div.login
+						span= loggedInUser || 'Sin usuario'
+
+		block marginless
+			section.main
+				block content

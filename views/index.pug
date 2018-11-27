@@ -1,5 +1,22 @@
 extends layout
 
-block content
-    h1= title
-    p Welcome to #{title}
+block header
+
+
+block marginless
+	div.index-container
+		div.welcome-banner.branding
+			h1 eCongress
+			h2 The future of democracy
+		div.welcome-explanation
+			p.
+				Te damos la bienvenida a eCongress. Aquí podrás apoyar las leyes con las que estés de acuerdo, así como
+				hacer tus propias propuestas. ¡Haz que se escuche tu voz!
+
+		div.signup
+			h3 Crear una cuenta
+			form
+				input(required type='text' name='username' value='nombre de usuario')
+				input(required type='password' name='password' value='contraseña')
+				input(type='submit' value='Registrarme')
+			a ¡Ya tengo cuenta!
