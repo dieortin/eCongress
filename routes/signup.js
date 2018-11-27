@@ -8,12 +8,36 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+const debugSignup = require('debug')('econgress:signup')
+const bcrypt = require('bcrypt')
+var router = express.Router()
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-	res.render('index', {title: 'eCongress'})
-});
+const User = require('../models/User')
 
-module.exports = router;
+router.post('/', function (req, res, next) {
+	const username = req.body.username
+	const password = req.body.password
+
+	debugSignup(`New registration attempt: ${username} ${password}`)
+	if (!username || !password) {
+		debugSignup(`Registration attempt with empty fields rejected`)
+		res.render('notice', {message: 'Ni el nombre de usuario ni la contraseña pueden estar vacíos'})
+	} else {
+		bcrypt.hash(password, 10, function (err, hash) {
+			const newUser = new User({
+				username: username,
+				passwordHash: hash
+			})
+			newUser.save((err /*, newUser*/) => {
+				if (err) {
+					return console.error(err)
+				}
+				debugSignup(`New User registered: username:${username} hash:${hash}`)
+				res.redirect('https://google.es')
+			})
+		})
+	}
+})
+
+module.exports = router

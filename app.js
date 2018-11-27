@@ -8,16 +8,16 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
+const createError = require('http-errors')
+const express = require('express')
+const path = require('path')
+const cookieParser = require('cookie-parser')
 const debugInit = require('debug')('econgress:init')
 
 // Environment variables setup
 require('dotenv').config()
 
-const passport = require('passport');
+const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
@@ -27,21 +27,21 @@ const database = require('./helpers/database')
 const auth = require('./helpers/auth')
 
 // ROUTES
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index')
+const usersRouter = require('./routes/users')
+const signupRouter = require('./routes/signup')
 
-const app = express();
+const app = express()
 
 // EXPRESS SETUP
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'pug')
 
 // MIDDLEWARE
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
 
 // START
 database.connect()
@@ -97,22 +97,23 @@ function setupPassport() {
 function setupRoutes() {
 	return new Promise((resolve, reject) => {
 		debugInit('Setting up routes...')
-		app.use('/', indexRouter);
-		app.use('/users', usersRouter);
+		app.use('/', indexRouter)
+		app.use('/users', usersRouter)
+		app.use('/signup', signupRouter)
 		// catch 404 and forward to error handler
 		app.use(function (req, res, next) {
-			next(createError(404));
+			next(createError(404))
 		})
 
 		// error handler
 		app.use(function (err, req, res, next) {
 			// set locals, only providing error in development
-			res.locals.message = err.message;
-			res.locals.error = req.app.get('env') === 'development' ? err : {};
+			res.locals.message = err.message
+			res.locals.error = req.app.get('env') === 'development' ? err : {}
 
 			// render the error page
-			res.status(err.status || 500);
-			res.render('error');
+			res.status(err.status || 500)
+			res.render('error')
 		})
 		debugInit('Done')
 		resolve()
@@ -120,4 +121,4 @@ function setupRoutes() {
 }
 
 
-module.exports = app;
+module.exports = app
