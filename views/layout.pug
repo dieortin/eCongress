@@ -20,11 +20,14 @@ html
 
 				block login
 					div.login
-						if username
-							span Sesión iniciada como <b>#{username}</b>
-						else
-							span 'Sin usuario'
+						div.loggedUser
+							if username
+								span Sesión actual: <b>#{username}</b>
+								a(href='/logout') Cerrar sesión
+							else
+								span 'Sin usuario'
 
 		block marginless
 			section.main
 				block content
+		span.copyright © Diego Ortín 2018
