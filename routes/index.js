@@ -26,10 +26,10 @@ router.get('/login', function (req, res, next) {
 
 function sendWelcomeOrHomepage(req, res) {
 	if (req.isAuthenticated()) {
-		debugIndex('Request authenticated')
+		//debugIndex('Request authenticated')
 		res.render('index', req.app.locals.renderingOptions)
 	} else {
-		debugIndex('Request NOT authenticated')
+		//debugIndex('Request NOT authenticated')
 		res.render('welcome', req.app.locals.renderingOptions)
 	}
 }
