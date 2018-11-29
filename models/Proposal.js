@@ -25,6 +25,10 @@ const proposalSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	user: {
+		type: String,
+		required: true
+	},
 	explanation: {
 		type: String,
 		required: true
