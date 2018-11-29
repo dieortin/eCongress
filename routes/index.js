@@ -21,17 +21,46 @@
 const express = require('express')
 const router = express.Router()
 
+const checkAuth = require('../helpers/checkAuth')
+const Proposal = require('../models/Proposal')
+
 //const debugIndex = require('debug')('econgress:index')
+const debugProposals = require('debug')('econgress:proposals')
 
 /* GET home page. */
 router.get('/', function (req, res/*, next*/) {
-	req.app.locals.renderingOptions.login = false
-	sendWelcomeOrHomepage(req, res)
+	Proposal.find({}, function (err, proposals) {
+		req.app.locals.renderingOptions.proposals = proposals
+		sendWelcomeOrHomepage(req, res)
+	})
 });
 
 router.get('/login', function (req, res/*, next*/) {
 	req.app.locals.renderingOptions.login = true
 	sendWelcomeOrHomepage(req, res)
+})
+
+router.get('/newProposal', function (req, res) {
+	req.app.locals.renderingOptions.newProposal = true
+	sendWelcomeOrHomepage(req, res)
+})
+
+router.post('/newProposal', checkAuth, function (req, res, next) {
+	const proposalName = req.body.name
+	const proposalExplanation = req.body.explanation
+
+	const newProposal = new Proposal({
+		name: proposalName,
+		explanation: proposalExplanation,
+		user: req.user.username,
+		votes: [req.user.username]
+	})
+
+	newProposal.save((err, savedProposal) => {
+		if (err) return next(err)
+		debugProposals(`New proposal added: name:${proposalName} with date ${savedProposal.dateAdded}`)
+		res.redirect('/')
+	})
 })
 
 function sendWelcomeOrHomepage(req, res) {
