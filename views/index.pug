@@ -1,22 +1,4 @@
 extends layout
 
-block header
-
-
-block marginless
-	div.index-container
-		div.welcome-banner.branding
-			h1 eCongress
-			h2 The future of democracy
-		div.welcome-explanation
-			p.
-				Te damos la bienvenida a eCongress. Aquí podrás apoyar las leyes con las que estés de acuerdo, así como
-				hacer tus propias propuestas. ¡Haz que se escuche tu voz!
-
-		div.signup
-			h3 Crear una cuenta
-			form(action='/signup' method='post')
-				input(required onfocus='clearInput(this, "nombre de usuario")' type='text' name='username' value='nombre de usuario')
-				input(required onfocus='clearInput(this, "contraseña")' type='password' name='password' value='contraseña')
-				input(type='submit' value='Registrarme')
-			a(href='/login') ¡Ya tengo cuenta!
+block content
+	h1 This is the index bois

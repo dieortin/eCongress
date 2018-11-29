@@ -25,11 +25,13 @@ const MongoStore = require('connect-mongo')(session)
 // HELPERS
 const database = require('./helpers/database')
 const auth = require('./helpers/auth')
+const addRenderingData = require('./helpers/addRenderingData')
 
 // ROUTES
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const signupRouter = require('./routes/signup')
+const loginRouter = require('./routes/login')
 
 const app = express()
 
@@ -52,6 +54,7 @@ database.connect()
 	})
 	.catch((err) => {
 		debugInit('Error found while initializing the application: ' + err)
+		console.error(err)
 	})
 
 // PASSPORT
@@ -97,13 +100,21 @@ function setupPassport() {
 function setupRoutes() {
 	return new Promise((resolve, reject) => {
 		debugInit('Setting up routes...')
+		app.use(addRenderingData)
 		app.use('/', indexRouter)
 		app.use('/users', usersRouter)
 		app.use('/signup', signupRouter)
+		app.use('/login', loginRouter)
 		// catch 404 and forward to error handler
 		app.use(function (req, res, next) {
 			next(createError(404))
 		})
+
+		app.post('/auth', passport.authenticate('local', {
+			successRedirect: '/',
+			failureRedirect: '/login',
+			failureFlash: true
+		}))
 
 		// error handler
 		app.use(function (err, req, res, next) {

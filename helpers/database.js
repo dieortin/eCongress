@@ -57,7 +57,7 @@ exports.disconnect = function (done) {
 }
 
 function containsEmptyStrings(obj) {
-	for (var p in obj) {
+	for (const p in obj) {
 		if (obj.hasOwnProperty(p) && (obj[p] === '' || obj[p] === null)) return true
 	}
 	return false

@@ -11,13 +11,20 @@
 const express = require('express')
 const router = express.Router()
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-	if (req.isAuthenticated()) {
-		res.render('index', req.app.locals.renderingOptions)
-	} else {
-		res.render('welcome', req.app.locals.renderingOptions)
-	}
-});
+const debugLogin = require('debug')('econgress:login')
 
-module.exports = router;
+const User = require('../models/User')
+
+router.post('/', function (req, res, next) {
+	const username = req.body.username
+	const password = req.body.password
+
+	User.findOne({username: username}, (err, user) => {
+		if (err) {
+			next(err)
+		}
+		debugLogin(`User with username=${username}: ${user}`)
+	})
+})
+
+module.exports = router

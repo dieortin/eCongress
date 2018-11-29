@@ -8,10 +8,10 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var express = require('express')
+const express = require('express')
 const debugSignup = require('debug')('econgress:signup')
 const bcrypt = require('bcrypt')
-var router = express.Router()
+const router = express.Router()
 
 const User = require('../models/User')
 
@@ -19,25 +19,46 @@ router.post('/', function (req, res, next) {
 	const username = req.body.username
 	const password = req.body.password
 
-	debugSignup(`New registration attempt: ${username} ${password}`)
+	debugSignup(`New registration attempt: username="${username}" password="${password}"`)
 	if (!username || !password) {
 		debugSignup(`Registration attempt with empty fields rejected`)
-		res.render('notice', {message: 'Ni el nombre de usuario ni la contraseña pueden estar vacíos'})
+		req.app.locals.renderingOptions.message = 'Ni el nombre de usuario ni la contraseña pueden estar vacíos'
+		res.render('notice', req.app.locals.renderingOptions)
 	} else {
-		bcrypt.hash(password, 10, function (err, hash) {
-			const newUser = new User({
-				username: username,
-				passwordHash: hash
-			})
-			newUser.save((err /*, newUser*/) => {
-				if (err) {
-					return console.error(err)
-				}
-				debugSignup(`New User registered: username:${username} hash:${hash}`)
-				res.redirect('https://google.es')
-			})
+		usernameIsTaken(username, (err, isTaken) => {
+			if (err) {
+				debugSignup(`Error while checking if the username ${username} is taken`)
+				return next(err)
+			} else if (isTaken) {
+				req.app.locals.renderingOptions.message = 'Ya existe una cuenta con este nombre de usuario'
+				res.render('notice', req.app.locals.renderingOptions)
+			} else {
+				bcrypt.hash(password, 10, function (err, hash) {
+					const newUser = new User({
+						username: username,
+						passwordHash: hash
+					})
+					newUser.save((err /*, newUser*/) => {
+						if (err) {
+							return next(err)
+						}
+						debugSignup(`New User registered: username:${username} hash:${hash}`)
+						res.redirect('/')
+					})
+				})
+			}
 		})
 	}
 })
+
+function usernameIsTaken(username, callback) {
+	User.countDocuments({username: username}, (err, count) => {
+		if (err) {
+			debugSignup(err)
+			return callback(err)
+		}
+		callback(null, count !== 0)
+	})
+}
 
 module.exports = router
