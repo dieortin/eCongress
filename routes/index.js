@@ -11,15 +11,15 @@
 const express = require('express')
 const router = express.Router()
 
-const debugIndex = require('debug')('econgress:index')
+//const debugIndex = require('debug')('econgress:index')
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res/*, next*/) {
 	req.app.locals.renderingOptions.login = false
 	sendWelcomeOrHomepage(req, res)
 });
 
-router.get('/login', function (req, res, next) {
+router.get('/login', function (req, res/*, next*/) {
 	req.app.locals.renderingOptions.login = true
 	sendWelcomeOrHomepage(req, res)
 })

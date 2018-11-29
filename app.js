@@ -62,7 +62,7 @@ database.connect()
 
 // PASSPORT
 function setupPassport() {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve/*, reject*/) => {
 		debugInit('Setting up Passport...')
 		app.use(session({ // Session initialization
 			secret: process.env.SESSION_SECRET,
@@ -102,7 +102,7 @@ function setupPassport() {
 
 // SET ROUTES
 function setupRoutes() {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve/*, reject*/) => {
 		debugInit('Setting up routes...')
 		app.use(addRenderingData)
 		app.use('/', indexRouter)
@@ -121,7 +121,7 @@ function setupRoutes() {
 		})
 
 		// error handler
-		app.use(function (err, req, res, next) {
+		app.use(function (err, req, res/*, next*/) {
 			// set locals, only providing error in development
 			res.locals.message = err.message
 			res.locals.error = req.app.get('env') === 'development' ? err : {}
