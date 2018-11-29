@@ -40,6 +40,6 @@ const proposalSchema = mongoose.Schema({
 	votes: [String] // usernames of the people who voted for it
 })
 
-const Proposal = mongoose.model('Proposal', userSchema)
+const Proposal = mongoose.model('Proposal', proposalSchema)
 
 module.exports = Proposal
