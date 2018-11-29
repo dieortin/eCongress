@@ -81,7 +81,7 @@ header > div {
 }
 
 header div.branding {
-    text-shadow: 0px 0px 2px #444444;
+    text-shadow: 0 0 2px #444444;
     flex-direction: column;
     justify-content: center;
     color: white;
@@ -178,6 +178,6 @@ span.copyright {
     padding: 15px;
     align-self: end;
     color: #fff;
-    text-shadow: 0px 0px 4px #444;
+    text-shadow: 0 0 4px #444;
     text-align: center;
 }
