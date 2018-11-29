@@ -35,7 +35,8 @@ const proposalSchema = mongoose.Schema({
 	},
 	dateAdded: {
 		type: Date,
-		required: true
+		required: true,
+		default: Date.now
 	},
 	votes: [String] // usernames of the people who voted for it
 })
