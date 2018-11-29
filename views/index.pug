@@ -1,4 +1,17 @@
 extends layout
 
 block content
-	h1 This is the index bois
+	a.button(href='/newProposal') Nueva propuesta
+	if newProposal
+		form.newProposal(action='/newProposal', method='post')
+			input(type='text', name='name', value='Nombre')
+			input(type='text', name='explanation', value='Explicación')
+			input(type='submit', value='Enviar')
+	if proposals
+		ol
+			each prop in proposals
+				li
+					h3= prop.name
+					span= prop.explanation
+					- const d = prop.dateAdded
+					span De <b>#{prop.user}</b> el #{d.getDay()}/#{d.getMonth()}/#{d.getFullYear()} a las #{d.getHours()}:#{d.getMinutes()}
