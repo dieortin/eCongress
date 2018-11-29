@@ -38,12 +38,18 @@ router.post('/', function (req, res, next) {
 						username: username,
 						passwordHash: hash
 					})
-					newUser.save((err /*, newUser*/) => {
+					newUser.save((err, newUser) => {
 						if (err) {
 							return next(err)
 						}
 						debugSignup(`New User registered: username:${username} hash:${hash}`)
-						res.redirect('/')
+						req.login(newUser, (err) => {
+							if (err) {
+								return next(err)
+							}
+							debugSignup('Successfully logged in new user')
+							return res.redirect('/')
+						})
 					})
 				})
 			}

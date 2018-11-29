@@ -20,7 +20,10 @@ html
 
 				block login
 					div.login
-						span= loggedInUser || 'Sin usuario'
+						if username
+							span Sesión iniciada como <b>#{username}</b>
+						else
+							span 'Sin usuario'
 
 		block marginless
 			section.main

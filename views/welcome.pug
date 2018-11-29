@@ -14,9 +14,17 @@ block marginless
 				hacer tus propias propuestas. ¡Haz que se escuche tu voz!
 
 		div.signup
-			h3 Crear una cuenta
-			form(action='/signup' method='post')
-				input(required onfocus='clearInput(this, "nombre de usuario")' type='text' name='username' value='nombre de usuario')
-				input(required onfocus='clearInput(this, "contraseña")' type='password' name='password' value='contraseña')
-				input(type='submit' value='Registrarme')
-			a(href='/login') ¡Ya tengo cuenta!
+			if !login
+				h3 Crear una cuenta
+				form(action='/signup' method='post')
+					input(required onfocus='clearInput(this, "nombre de usuario")' type='text' name='username' value='nombre de usuario')
+					input(required onfocus='clearInput(this, "contraseña")' type='password' name='password' value='contraseña')
+					input(type='submit' value='Registrarme')
+				a(href='/login') ¡Ya tengo cuenta!
+			else
+				h3 Iniciar sesión
+				form(action='/auth' method='post')
+					input(required onfocus='clearInput(this, "nombre de usuario")' type='text' name='username' value='nombre de usuario')
+					input(required onfocus='clearInput(this, "contraseña")' type='password' name='password' value='contraseña')
+					input(type='submit' value='Iniciar sesión')
+				a(href='/') ¡No tengo cuenta!

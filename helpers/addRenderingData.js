@@ -11,7 +11,7 @@
 function addRenderingData(req, res, next) {
 	req.app.locals.renderingOptions = {}
 	if (req.isAuthenticated()) {
-		req.app.locals.renderingOptions.user = req.user
+		req.app.locals.renderingOptions.username = req.user.username
 	}
 	next()
 }

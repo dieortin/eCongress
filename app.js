@@ -12,7 +12,9 @@ const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 const debugInit = require('debug')('econgress:init')
+const log404 = require('debug')('econgress:404')
 
 // Environment variables setup
 require('dotenv').config()
@@ -31,7 +33,6 @@ const addRenderingData = require('./helpers/addRenderingData')
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const signupRouter = require('./routes/signup')
-const loginRouter = require('./routes/login')
 
 const app = express()
 
@@ -40,8 +41,10 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
 // MIDDLEWARE
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+	extended: false
+}))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -64,9 +67,9 @@ function setupPassport() {
 		app.use(session({ // Session initialization
 			secret: process.env.SESSION_SECRET,
 			resave: false,
-			saveUninitialized: true,
+			saveUninitialized: false,
 			cookie: {
-				secure: true,
+				secure: false, // TODO: Enable if moved to HTTPS
 				maxAge: 604800000, // 7 days
 				httpOnly: true // helps mitigate some attacks
 			},
@@ -87,6 +90,7 @@ function setupPassport() {
 		const User = require('./models/User')
 		passport.deserializeUser(function (id, done) {
 			User.findById(id, (err, user) => {
+				if (err) console.error(err)
 				done(err, user)
 			})
 		})
@@ -104,17 +108,17 @@ function setupRoutes() {
 		app.use('/', indexRouter)
 		app.use('/users', usersRouter)
 		app.use('/signup', signupRouter)
-		app.use('/login', loginRouter)
-		// catch 404 and forward to error handler
-		app.use(function (req, res, next) {
-			next(createError(404))
-		})
 
 		app.post('/auth', passport.authenticate('local', {
 			successRedirect: '/',
-			failureRedirect: '/login',
-			failureFlash: true
+			failureRedirect: '/login'
 		}))
+
+		// catch 404 and forward to error handler
+		app.use(function (req, res, next) {
+			log404(`404 on path ${req.path}`)
+			next(createError(404))
+		})
 
 		// error handler
 		app.use(function (err, req, res, next) {
