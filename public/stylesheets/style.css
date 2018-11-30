@@ -87,12 +87,19 @@ header div.branding {
     color: white;
 }
 
-header div.branding > * {
-    margin: 5px 20px;
+div.branding h1, div.branding h2 {
+    margin: 0;
 }
 
 header div.branding h2 {
     font-size: 1em;
+}
+
+header div.branding a {
+    text-decoration: inherit;
+    color: inherit;
+    padding: 0.8em;
+    height: calc(100% - 0.8em);
 }
 
 header div.login > div.loggedUser {
