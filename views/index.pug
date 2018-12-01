@@ -8,10 +8,14 @@ block content
 			input(type='text', name='explanation', value='Explicación')
 			input(type='submit', value='Enviar')
 	if proposals
-		ol
+		ol.proposals
 			each prop in proposals
-				li
-					h3= prop.name
-					span= prop.explanation
+				li.proposal
+					if prop.votes.includes(username)
+						img(src='/images/upvote.png')
+					else
+						img(src='/images/upvote_grayscale.png')
+					h3.name= prop.name
+					span.explanation= prop.explanation
 					- const d = prop.dateAdded
-					span De <b>#{prop.user}</b> el #{d.getDay()}/#{d.getMonth()}/#{d.getFullYear()} a las #{d.getHours()}:#{d.getMinutes()}
+					span.metadata De <b>#{prop.user}</b> el #{d.getDay()}/#{d.getMonth()}/#{d.getFullYear()} a las #{d.getHours()}:#{d.getMinutes()}
