@@ -32,10 +32,10 @@ function clearInput(input, value) {
 
 // noinspection JSUnusedGlobalSymbols
 /**
- * Sends a request to vote for the proposal with the provided ID
- * @param propId The ID of the proposal to vote for
+ * Sends a request to vote/remove the vote for the proposal with the provided ID
+ * @param propId The ID of the proposal to vote/remove the vote for
  */
-function voteFor(propId) {
+function voteToggle(propId) {
 	function processResponse() {
 		console.log(this)
 		if (this.status === 200) {
@@ -45,6 +45,6 @@ function voteFor(propId) {
 
 	const req = new XMLHttpRequest()
 	req.addEventListener('load', processResponse)
-	req.open('POST', '/voteFor/' + propId)
+	req.open('POST', '/voteToggle/' + propId)
 	req.send()
 }

@@ -67,15 +67,21 @@ router.post('/newProposal', checkAuth, function (req, res, next) {
 	})
 })
 
-router.post('/voteFor/:proposalId', function (req, res, next) {
+router.post('/voteToggle/:proposalId', function (req, res, next) {
 	const proposalId = req.params.proposalId
 	Proposal.findById(proposalId).exec((err, proposal) => {
 		if (err) next(err)
-		if (proposal.voters.includes(req.user.username)) {
-			debugProposals(`User ${req.user.username} cannot vote for proposal "${proposal.name}" because he already did`)
-			res.sendStatus(401)
-			res.end()
-		} else {
+		if (proposal.voters.includes(req.user.username)) { // User has already voted for this proposal
+			proposal.update({
+				'$pull': {'voters': req.user.username},
+				'$inc': {'voteNum': '-1'}
+			}, function (err/*, result*/) {
+				if (err) next(err)
+				res.sendStatus(200)
+				res.end()
+				debugProposals(`User ${req.user.username} successfully cancelled his vote for "${proposal.name}"`)
+			})
+		} else { // User had not previously voted for this proposal
 			proposal.update({
 				'$push': {'voters': req.user.username},
 				'$inc': {'voteNum': '1'}

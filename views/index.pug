@@ -17,7 +17,7 @@ block content
 					else
 						- upvoteImg = '/images/upvote_grayscale.png'
 					div.votes
-						img(onclick=`voteFor('${prop.id}')`, src=upvoteImg)
+						img(onclick=`voteToggle('${prop.id}')`, src=upvoteImg)
 						span.voteNum= prop.voteNum
 					div.content
 						h3.name= prop.name
