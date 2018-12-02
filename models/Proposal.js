@@ -38,7 +38,12 @@ const proposalSchema = mongoose.Schema({
 		required: true,
 		default: Date.now
 	},
-	votes: [String] // usernames of the people who voted for it
+	voters: [String], // usernames of the people who voted for it
+	voteNum: {
+		type: Number,
+		required: true,
+		default: 1
+	}
 })
 
 const Proposal = mongoose.model('Proposal', proposalSchema)

@@ -11,10 +11,12 @@ block content
 		ol.proposals
 			each prop in proposals
 				li.proposal
-					if prop.votes.includes(username)
-						img(src='/images/upvote.png')
+					- var upvoteImg
+					if prop.voters.includes(username)
+						- upvoteImg = '/images/upvote.png'
 					else
-						img(src='/images/upvote_grayscale.png')
+						- upvoteImg = '/images/upvote_grayscale.png'
+					img(onclick=`voteFor('${prop.id}')`, src=upvoteImg)
 					h3.name= prop.name
 					span.explanation= prop.explanation
 					- const d = prop.dateAdded

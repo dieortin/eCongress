@@ -29,7 +29,7 @@ const debugProposals = require('debug')('econgress:proposals')
 
 /* GET home page. */
 router.get('/', function (req, res/*, next*/) {
-	Proposal.find({}, function (err, proposals) {
+	Proposal.find({}).sort({voteNum: -1}).exec((err, proposals) => {
 		req.app.locals.renderingOptions.proposals = proposals
 		sendWelcomeOrHomepage(req, res)
 	})
@@ -40,9 +40,13 @@ router.get('/login', function (req, res/*, next*/) {
 	sendWelcomeOrHomepage(req, res)
 })
 
+
 router.get('/newProposal', function (req, res) {
-	req.app.locals.renderingOptions.newProposal = true
-	sendWelcomeOrHomepage(req, res)
+	Proposal.find({}).sort({voteNum: -1}).exec((err, proposals) => {
+		req.app.locals.renderingOptions.newProposal = true
+		req.app.locals.renderingOptions.proposals = proposals
+		sendWelcomeOrHomepage(req, res)
+	})
 })
 
 router.post('/newProposal', checkAuth, function (req, res, next) {
@@ -53,13 +57,35 @@ router.post('/newProposal', checkAuth, function (req, res, next) {
 		name: proposalName,
 		explanation: proposalExplanation,
 		user: req.user.username,
-		votes: [req.user.username]
+		voters: [req.user.username]
 	})
 
 	newProposal.save((err, savedProposal) => {
 		if (err) return next(err)
 		debugProposals(`New proposal added: name:${proposalName} with date ${savedProposal.dateAdded}`)
 		res.redirect('/')
+	})
+})
+
+router.post('/voteFor/:proposalId', function (req, res, next) {
+	const proposalId = req.params.proposalId
+	Proposal.findById(proposalId).exec((err, proposal) => {
+		if (err) next(err)
+		if (proposal.voters.includes(req.user.username)) {
+			debugProposals(`User ${req.user.username} cannot vote for proposal "${proposal.name}" because he already did`)
+			res.sendStatus(401)
+			res.end()
+		} else {
+			proposal.update({
+				'$push': {'voters': req.user.username},
+				'$inc': {'voteNum': '1'}
+			}, function (err/*, result*/) {
+				if (err) next(err)
+				res.sendStatus(200)
+				res.end()
+				debugProposals(`User ${req.user.username} successfully voted for proposal "${proposal.name}"`)
+			})
+		}
 	})
 })
 
