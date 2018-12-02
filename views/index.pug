@@ -16,8 +16,11 @@ block content
 						- upvoteImg = '/images/upvote.png'
 					else
 						- upvoteImg = '/images/upvote_grayscale.png'
-					img(onclick=`voteFor('${prop.id}')`, src=upvoteImg)
-					h3.name= prop.name
-					span.explanation= prop.explanation
-					- const d = prop.dateAdded
-					span.metadata De <b>#{prop.user}</b> el #{d.getDay()}/#{d.getMonth()}/#{d.getFullYear()} a las #{d.getHours()}:#{d.getMinutes()}
+					div.votes
+						img(onclick=`voteFor('${prop.id}')`, src=upvoteImg)
+						span.voteNum= prop.voteNum
+					div.content
+						h3.name= prop.name
+						span.explanation= prop.explanation
+						- const d = prop.dateAdded
+						span.metadata De <b>#{prop.user}</b> el #{d.getDay()}/#{d.getMonth()}/#{d.getFullYear()} a las #{d.getHours()}:#{d.getMinutes()}

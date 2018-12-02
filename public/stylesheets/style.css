@@ -190,18 +190,26 @@ li.proposal {
     margin: 0.5em auto;
     padding: 0.6em;
     list-style: none;
+    display: flex;
 }
 
-li.proposal img {
+li.proposal .votes {
+    width: 16px;
+    display: inline-block;
+    text-align: center;
+}
+
+.votes img {
     width: 16px;
 }
 
-li.proposal .explanation, li.proposal .metadata {
-    margin-left: calc(16px + 10px); /* image width + name left margin */
+li.proposal .content {
+    padding-left: 0.5em;
+
 }
 
 li.proposal .name {
-    margin: 0 0 0.3em 10px;
+    margin: 0 0 0.3em 0;
     display: inline-block;
 }
 
