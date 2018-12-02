@@ -191,6 +191,28 @@ div.signup input[type='submit'] {
     width: auto;
 }
 
+form.newProposal {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    padding: 15px;
+    border: 1px solid #005ba0;
+    border-radius: 1em;
+}
+
+form.newProposal h3 {
+    margin: 5px auto;
+}
+
+form.newProposal textarea {
+    height: 100px;
+}
+
+form.newProposal input[type='submit'] {
+    background-color: #0076BD;
+    color: white;
+}
+
 ol.proposals {
     padding-left: 0;
 }
@@ -234,8 +256,6 @@ li.proposal .explanation {
     font-size: 0.8em;
     margin-top: 1em;
 }
-
-
 
 span.copyright {
     padding: 15px;

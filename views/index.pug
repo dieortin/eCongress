@@ -1,12 +1,14 @@
 extends layout
 
 block content
-	a.button(href='/newProposal') Nueva propuesta
 	if newProposal
 		form.newProposal(action='/newProposal', method='post')
-			input(type='text', name='name', value='Nombre')
-			input(type='text', name='explanation', value='Explicación')
-			input(type='submit', value='Enviar')
+			h3 Nueva propuesta
+			input(type='text', onfocus='clearInput(this, "Nombre de la propuesta")', name='name', required, value='Nombre de la propuesta')
+			textarea(name='explanation', required, placeholder='Explica aquí tu propuesta')
+			input.button(type='submit', value='Enviar')
+	else
+		a.button(href='/newProposal') Nueva propuesta
 	if proposals
 		ol.proposals
 			each prop in proposals
